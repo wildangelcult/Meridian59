@@ -165,6 +165,26 @@ LRESULT CALLBACK StatsListProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lP
       	 return 0;
       break;
 
+   case WM_MOUSEWHEEL:
+   {
+      WPARAM code;
+      int zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
+
+      if (zDelta < 0) {
+	      code = MAKEWPARAM(SB_LINEDOWN, 0);
+	      zDelta = -zDelta;
+      } else {
+	      code = MAKEWPARAM(SB_LINEUP, 0);
+      }
+      zDelta /= WHEEL_DELTA;
+
+      while (zDelta --> 0) {
+	      SendMessage(hList, WM_VSCROLL, code, 0);
+      }
+
+      return 0;
+   }
+
       HANDLE_MSG(hwnd, WM_VSCROLL, StatsListVScroll);
 
    case WM_ERASEBKGND:
